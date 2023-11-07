@@ -1,15 +1,15 @@
 Java 8
-Tempo de setup 3303ms
+Tempo de setup 167ms
 Número de chamadas: 1
-Tempo médio de resposta: 406ms
-Mediana: 406ms
+Tempo médio de resposta: 1034ms
+Mediana: 1034ms
 Desvio Padrão: 0
 Variância: 0
-Mínimo: 406ms
-Máximo: 406ms
+Mínimo: 1034ms
+Máximo: 1034ms
 Falharam 0 requisições
 
 
 Tempos em millisegundos:
 
-406
+1034

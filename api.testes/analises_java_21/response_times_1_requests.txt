@@ -1,15 +1,15 @@
 Java 21
-Tempo de setup 5616ms
+Tempo de setup 80ms
 Número de chamadas: 1
-Tempo médio de resposta: 496ms
-Mediana: 496ms
+Tempo médio de resposta: 1161ms
+Mediana: 1161ms
 Desvio Padrão: 0
 Variância: 0
-Mínimo: 496ms
-Máximo: 496ms
+Mínimo: 1161ms
+Máximo: 1161ms
 Falharam 0 requisições
 
 
 Tempos em millisegundos:
 
-496
+1161
