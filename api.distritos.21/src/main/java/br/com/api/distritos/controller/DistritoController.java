@@ -51,17 +51,23 @@ public class DistritoController {
     }
 
     @PostMapping("/setup")
-    public ResponseEntity<String> loadDatabase(){
+    public ResponseEntity<String> setup() {
         try {
-            if(distritoRepository.existAnyRecord()){
-                return ResponseEntity.status(200).body("Os distritos já foram carregados!");
+            if (distritoRepository.existAnyRecord()) {
+                return ResponseEntity.status(200)
+                        .header("version", "21")
+                        .body("Os distritos já foram carregados!");
             }
             popularBanco();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(400).body(e.getLocalizedMessage());
+            return ResponseEntity.status(400)
+                    .header("version", "21")
+                    .body(e.getLocalizedMessage());
         }
-        return ResponseEntity.status(200).body("Distritos carregados com sucesso!");
+        return ResponseEntity.status(200)
+                .header("version", "21")
+                .body("Distritos carregados com sucesso!");
     }
 
     void popularBanco() throws IOException {

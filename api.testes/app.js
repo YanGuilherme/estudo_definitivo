@@ -2,25 +2,31 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
+let javaVersion = undefined
 
 // Função para criar a pasta "analises" se não existir
-function createAnalisesFolder() {
-  const folderPath = path.join(__dirname, 'analises');
+function createAnalisesFolder(folderName) {
+  const folderPath = path.join(__dirname, folderName);
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
   }
 }
 
-async function setup() {
-  createAnalisesFolder();
+let setupTime = undefined 
 
+async function setup() {
   try {
     console.log("Realizando setup no servidor...")
+    const setupStartTime = new Date().getTime();
     const response = await axios.post('http://localhost:8080/setup');
+    let setupEndTime = new Date().getTime();
+    setupTime = setupEndTime - setupStartTime
     if (response.status !== 200) {
       console.error("Erro ao realizar o setup! " + response.data);
     } else {
-      console.log("Setup realizado com sucesso! " + response.data);
+      javaVersion = response.headers['version'];
+      console.log("Setup realizado com sucesso!");
+      createAnalisesFolder('analises_java_' + javaVersion);
     }
   } catch (error) {
     console.error(`Erro ao realizar o setup: ${error.message}`);
@@ -33,23 +39,16 @@ let responseTimes = [];
 // Função para realizar uma chamada à API e medir o tempo de resposta
 async function makeAPICall(x) {
   const startTime = new Date().getTime();
-  let endTime = startTime;
-
   try {
-    const response = await axios.get('http://localhost:8080/distritos');
-    endTime = new Date().getTime();
-
-    if (response.status !== 200) {
-      console.error(`Erro na chamada ${x}: ${response.data}`);
-      failedRequests++;
-    }
+    await axios.get('http://localhost:8080/distritos');
   } catch (error) {
     console.error(`Erro na chamada ${x}: ${error.message}`);
     failedRequests++;
   }
+  const endTime = new Date().getTime();
   const totalTime = endTime - startTime;
   responseTimes.push(totalTime);
-  console.log(`Tempo da chamada ${x}: ${totalTime}ms`);
+  // console.log(`Tempo da chamada ${x}: ${totalTime}ms`);
   return totalTime;
 }
 
@@ -62,6 +61,10 @@ function calculateMedian(times) {
   } else {
     return sortedTimes[middle];
   }
+}
+
+function calculeteEverage(times) {
+  return times.reduce((acc, time) => acc + time, 0) / times.length
 }
 
 // Função para calcular o desvio padrão dos tempos de resposta
@@ -91,13 +94,12 @@ function calculateMax(times) {
 
 // Função para salvar os tempos e os parâmetros em um arquivo .txt
 function saveDataToFile(data, filename) {
-  const filePath = path.join(__dirname, 'analises', filename);
+  const filePath = path.join(__dirname, 'analises_java_' + javaVersion, filename);
   fs.writeFileSync(filePath, data, 'utf8');
 }
 
 // Função para realizar um número x de chamadas à API e calcular o tempo médio de resposta
 async function calculateAverageResponseTime(x) {
-  let totalTime = 0;
   responseTimes = [];
 
   // Cria um array de promessas para fazer chamadas simultâneas
@@ -105,13 +107,16 @@ async function calculateAverageResponseTime(x) {
 
   await Promise.all(promises);
 
-  const averageResponseTime = totalTime / x;
+  const averageResponseTime = calculeteEverage(responseTimes);
   const median = calculateMedian(responseTimes);
   const standardDeviation = calculateStandardDeviation(responseTimes);
   const variance = calculateVariance(responseTimes);
   const minTime = calculateMin(responseTimes);
   const maxTime = calculateMax(responseTimes);
 
+  console.log(`Versão do java: ${javaVersion}`)
+  console.log(`Número de requisições ${x}`)
+  console.log(`Tempo de setup: ${setupTime}ms`)
   console.log(`Tempo médio de resposta para ${x} chamadas: ${averageResponseTime}ms`);
   console.log(`Mediana: ${median}ms`);
   console.log(`Desvio Padrão: ${standardDeviation}`);
@@ -120,15 +125,27 @@ async function calculateAverageResponseTime(x) {
   console.log(`Máximo: ${maxTime}ms`);
   console.log(`Falharam ${failedRequests} requisições`);
 
-  const dataToSave = `Número de chamadas: ${x}\nTempo médio de resposta: ${averageResponseTime}ms\nMediana: ${median}ms\nDesvio Padrão: ${standardDeviation}\nVariância: ${variance}\nMínimo: ${minTime}ms\nMáximo: ${maxTime}ms\nFalharam ${failedRequests} requisições\n\n\nTempos em millisegundos:\n\n` + responseTimes.join('\n');
+  const dataToSave = `Java ${javaVersion}\nTempo de setup ${setupTime}ms\nNúmero de chamadas: ${x}\nTempo médio de resposta: ${averageResponseTime}ms\nMediana: ${median}ms\nDesvio Padrão: ${standardDeviation}\nVariância: ${variance}\nMínimo: ${minTime}ms\nMáximo: ${maxTime}ms\nFalharam ${failedRequests} requisições\n\n\nTempos em millisegundos:\n\n` + responseTimes.join('\n');
   const filename = `response_times_${x}_requests.txt`;
   saveDataToFile(dataToSave, filename);
 }
 
 async function main() {
-  await setup(); // Espera a conclusão do setup
-  const numberOfCalls = 10; // Número de chamadas à API que deseja realizar
-  await calculateAverageResponseTime(numberOfCalls); // Espera a conclusão do cálculo do tempo médio de resposta
+  const numberOfCallsList = [1, 10, 50, 100];
+  await setup();
+  const executionStartTime = new Date().getTime();
+  for (const numberOfCalls of numberOfCallsList) {
+    console.log("===========================================================")
+    const startTime = new Date().getTime();
+    await calculateAverageResponseTime(numberOfCalls);
+    const endTime = new Date().getTime();
+    console.log(`Número de chamadas: ${numberOfCalls}`);
+    console.log(`Tempo total de execução: ${endTime - startTime}ms`);
+    // Espera 10 segundos antes da próxima iteração
+    await new Promise(resolve => setTimeout(resolve, 10000));
+  }
+  const executionEndTime = new Date().getTime();
+  console.log(`Tempo total de execução da bateria de testes: ${executionEndTime - executionStartTime}ms`);
 }
 
 main(); // Inicia a execução do código

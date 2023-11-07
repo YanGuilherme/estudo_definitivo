@@ -51,18 +51,25 @@ public class DistritoController {
     }
 
     @PostMapping("/setup")
-    public ResponseEntity<String> loadDatabase(){
+    public ResponseEntity<String> setup() {
         try {
-            if(distritoRepository.existAnyRecord()){
-                return ResponseEntity.status(200).body("Os distritos já foram carregados!");
+            if (distritoRepository.existAnyRecord()) {
+                return ResponseEntity.status(200)
+                        .header("version", "8")
+                        .body("Os distritos já foram carregados!");
             }
             popularBanco();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(400).body(e.getLocalizedMessage());
+            return ResponseEntity.status(400)
+                    .header("version", "8")
+                    .body(e.getLocalizedMessage());
         }
-        return ResponseEntity.status(200).body("Distritos carregados com sucesso!");
+        return ResponseEntity.status(200)
+                .header("version", "8")
+                .body("Distritos carregados com sucesso!");
     }
+
 
     void popularBanco() throws IOException {
             // URL da API do IBGE
@@ -81,7 +88,7 @@ public class DistritoController {
             ObjectMapper objectMapper = new ObjectMapper();
 
             // Lê a resposta da API e mapeia para uma lista de objetos Distrito
-            List<Distrito> distritos = objectMapper.readValue(connection.getInputStream(), new TypeReference<>() {});
+            List<Distrito> distritos = objectMapper.readValue(connection.getInputStream(), new TypeReference<List<Distrito>>() {});
             Set<Municipio> municipios = distritos.stream().map(Distrito::getMunicipio).collect(Collectors.toSet());
 
             Set<Microrregiao> microrregioes = municipios.stream().map(Municipio::getMicrorregiao).collect(Collectors.toSet());
