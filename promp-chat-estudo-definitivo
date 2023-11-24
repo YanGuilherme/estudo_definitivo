@@ -1,0 +1,19 @@
+como faço para configurar meu banco de dados para que ele melhore a performance no quisito leitura, meu sistema vai receber muitas requisições ao mesmo tempo, até 1000 por exemplo, que vai consultar e listar todos os registros de uma tabela, aqui está meu arquivo application.properties. Quero que me dê sugestões de como melhorar a performance desse cenário ao máximo: port=8080
+
+# Configurações do banco de dados PostgreSQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+
+# Configuração do dialeto do Hibernate para PostgreSQL
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# Ativar o modo de atualização automática do banco de dados (opcional)
+spring.jpa.hibernate.ddl-auto=update
+
+
+# Configurações do HikariCP
+spring.datasource.hikari.idle-timeout=30000
+spring.datasource.hikari.connection-timeout=20000
+
+spring.threads.virtual.enabled=true
