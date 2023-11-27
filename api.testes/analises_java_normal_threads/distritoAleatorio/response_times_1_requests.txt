@@ -1,0 +1,14 @@
+Java normal_threads
+Número de chamadas: 1
+Tempo médio de resposta: 51ms
+Mediana: 51ms
+Desvio Padrão: 0
+Variância: 0
+Mínimo: 51ms
+Máximo: 51ms
+Falharam 0 requisições
+
+
+Tempos em millisegundos:
+
+51

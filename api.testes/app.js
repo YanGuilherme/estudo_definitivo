@@ -18,7 +18,7 @@ function createAnalisesFolder(folderName) {
 async function setup() {
   try {
     console.log("Realizando setup no servidor...")
-    const response = await axios.post('http://localhost:8080/setup');
+    const response = await axios.post('http://192.168.3.146:8080/setup');
     if (response.status !== 200) {
       console.error("Erro ao realizar o setup! " + response.data);
     } else {
@@ -39,7 +39,7 @@ let responseTimes = [];
 async function makeAPICall(x, endpoint, parameters) {
   const startTime = new Date().getTime();
   try {
-    await axios.get(`http://localhost:8080/${endpoint}`, {
+    await axios.get(`http://192.168.3.146:8080/${endpoint}`, {
       params: parameters,
       paramsSerializer: (params) => {
         return Object.entries(params)
@@ -158,11 +158,11 @@ const nada = () => {
 
 
 async function main() {
-  const numberOfCallsList = [1, 100, 1000, 10000, 20000, 30000];
+  const numberOfCallsList = [1, 10, 50, 100, 250, 500, 1000, 10000];
   const endpoints = [
     // { name: 'distritos', timeout: 20000, getParameters: nada},
-    // { name: 'distritoAleatorio', timeout: 20000, getParameters: getRandomId},
-    { name: 'processamento', timeout: 3000, getParameters: nada }
+    { name: 'distritoAleatorio', timeout: 20000, getParameters: getRandomId},
+    { name: 'processamento', timeout: 20000, getParameters: nada }
   ];
 
   await setup();
