@@ -1,14 +1,14 @@
 Java virtual_threads
 Número de chamadas: 1
-Tempo médio de resposta: 1006ms
-Mediana: 1006ms
+Tempo médio de resposta: 1005ms
+Mediana: 1005ms
 Desvio Padrão: 0
 Variância: 0
-Mínimo: 1006ms
-Máximo: 1006ms
+Mínimo: 1005ms
+Máximo: 1005ms
 Falharam 0 requisições
 
 
 Tempos em millisegundos:
 
-1006
+1005

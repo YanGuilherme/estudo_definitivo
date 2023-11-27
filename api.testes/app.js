@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 let javaVersion = undefined
+let ids = []
 
 // Função para criar a pasta "analises" se não existir
 function createAnalisesFolder(folderName) {
@@ -12,19 +13,17 @@ function createAnalisesFolder(folderName) {
   }
 }
 
-let setupTime = undefined 
+
 
 async function setup() {
   try {
     console.log("Realizando setup no servidor...")
-    const setupStartTime = new Date().getTime();
     const response = await axios.post('http://localhost:8080/setup');
-    let setupEndTime = new Date().getTime();
-    setupTime = setupEndTime - setupStartTime
     if (response.status !== 200) {
       console.error("Erro ao realizar o setup! " + response.data);
     } else {
       javaVersion = response.headers['version'];
+      ids = response.data
       console.log("Setup realizado com sucesso!");
       createAnalisesFolder('analises_java_' + javaVersion);
     }
@@ -37,10 +36,17 @@ let failedRequests = 0;
 let responseTimes = [];
 
 // Função para realizar uma chamada à API e medir o tempo de resposta
-async function makeAPICall(x, endpoint) {
+async function makeAPICall(x, endpoint, parameters) {
   const startTime = new Date().getTime();
   try {
-    await axios.get('http://localhost:8080/' + endpoint);
+    await axios.get(`http://localhost:8080/${endpoint}`, {
+      params: parameters,
+      paramsSerializer: (params) => {
+        return Object.entries(params)
+          .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+          .join('&');
+      },
+    });
   } catch (error) {
     console.error(`Erro na chamada ${x}: ${error.message}`);
     failedRequests++;
@@ -112,11 +118,11 @@ function saveDataToFile(data, filename) {
 }
 
 // Função para realizar um número x de chamadas à API e calcular o tempo médio de resposta
-async function calculateAverageResponseTime(x, endpoint) {
+async function calculateAverageResponseTime(x, endpoint, getParameters) {
   responseTimes = [];
 
   // Cria um array de promessas para fazer chamadas simultâneas
-  const promises = Array.from({ length: x }, (_, i) => makeAPICall(i + 1, endpoint));
+  const promises = Array.from({ length: x }, (_, i) => makeAPICall(i + 1, endpoint, getParameters()));
 
   await Promise.all(promises);
 
@@ -142,22 +148,32 @@ async function calculateAverageResponseTime(x, endpoint) {
   saveDataToFile(dataToSave, filename);
 }
 
+const getRandomId = () => {
+  return { id: ids[Math.floor(Math.random() * ids.length)] }
+}
+
+const nada = () => {
+  return { }
+}
+
+
 async function main() {
-  const numberOfCallsList = [1, 10, 50, 100, 250, 500, 1000];
+  const numberOfCallsList = [1, 100, 1000, 10000, 20000, 30000];
   const endpoints = [
-    { name: 'distritos', timeout: 20000 },
-    { name: 'processamento', timeout: 3000 }
+    // { name: 'distritos', timeout: 20000, getParameters: nada},
+    // { name: 'distritoAleatorio', timeout: 20000, getParameters: getRandomId},
+    { name: 'processamento', timeout: 3000, getParameters: nada }
   ];
 
   await setup();
   const executionStartTime = new Date().getTime();
 
-  for (const { name: endpoint, timeout } of endpoints) {
-    failedRequests = 0 
+  for (const { name: endpoint, timeout, getParameters} of endpoints) {
     for (const numberOfCalls of numberOfCallsList) {
+      failedRequests = 0 
       console.log("===========================================================");
       const startTime = new Date().getTime();
-      await calculateAverageResponseTime(numberOfCalls, endpoint);
+      await calculateAverageResponseTime(numberOfCalls, endpoint, getParameters );
       const endTime = new Date().getTime();
 
       console.log(`Número de chamadas: ${numberOfCalls}`);

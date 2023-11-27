@@ -8,16 +8,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -65,24 +66,30 @@ public class DistritoController {
         return ResponseEntity.status(200).body(distritoRepository.findAll());
     }
 
+    @GetMapping("/distritoAleatorio")
+    @Transactional(readOnly = true)
+    public ResponseEntity<Distrito> getRandom(@RequestParam(name = "id") Long id) {
+        return ResponseEntity.status(200).body(distritoRepository.findById(id).orElseThrow());
+    }
+
     @PostMapping("/setup")
-    public ResponseEntity<String> setup() {
+    public ResponseEntity<List<Long>> setup() {
         try {
             if (distritoRepository.existAnyRecord()) {
                 return ResponseEntity.status(200)
                         .header("version", Thread.currentThread().isVirtual() ? "virtual_threads" : "normal_threads" )
-                        .body("Os distritos já foram carregados!");
+                        .body(distritoRepository.findAll().stream().map(BaseDomain::getId).collect(Collectors.toList()));
             }
             popularBanco();
         } catch (Exception e) {
             log.error(e.getMessage());
             return ResponseEntity.status(400)
                     .header("version", Thread.currentThread().isVirtual() ? "virtual_threads" : "normal_threads")
-                    .body(e.getLocalizedMessage());
+                    .body(new ArrayList<>());
         }
         return ResponseEntity.status(200)
                 .header("version", Thread.currentThread().isVirtual() ? "virtual_threads" : "normal_threads")
-                .body("Distritos carregados com sucesso!");
+                .body(distritoRepository.findAll().stream().map(BaseDomain::getId).collect(Collectors.toList()));
     }
 
     private void popularBanco() throws IOException {
