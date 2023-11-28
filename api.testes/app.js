@@ -158,10 +158,10 @@ const nada = () => {
 
 
 async function main() {
-  const numberOfCallsList = [1, 10, 50, 100, 250, 500, 1000, 10000];
+  const numberOfCallsList = [1, 100, 1000, 10000, 15000];
   const endpoints = [
     // { name: 'distritos', timeout: 20000, getParameters: nada},
-    { name: 'distritoAleatorio', timeout: 20000, getParameters: getRandomId},
+    { name: 'distritoAleatorio', timeout: 60000, getParameters: getRandomId},
     { name: 'processamento', timeout: 20000, getParameters: nada }
   ];
 
