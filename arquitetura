@@ -1,0 +1,54 @@
+<mxfile modified="2023-12-04T22:47:43.435Z" host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36" etag="k6M61FG2-OHG-6-xREj_" version="22.1.5" type="device">
+  <diagram id="Ht1M8jgEwFfnCIfOTk4-" name="Page-1">
+    <mxGraphModel dx="1195" dy="633" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="5X0nf8TGMfctK7YNUYTA-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="210" y="445.5" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-9" value="Requisição" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="5X0nf8TGMfctK7YNUYTA-6">
+          <mxGeometry x="0.0456" y="-3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-10" value="Computador 1" style="fillColor=none;strokeColor=#5A6C86;dashed=1;verticalAlign=top;fontStyle=0;fontColor=#5A6C86;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="210" width="520" height="379" as="geometry" />
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="5X0nf8TGMfctK7YNUYTA-5" target="5X0nf8TGMfctK7YNUYTA-11">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="445.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-19" value="Conexão com o banco" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="5X0nf8TGMfctK7YNUYTA-15">
+          <mxGeometry x="-0.1881" y="-3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-5" value="Spring" style="outlineConnect=0;gradientColor=none;fontColor=#545B64;strokeColor=none;fillColor=#879196;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.illustration_desktop;pointerEvents=1;labelBackgroundColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="460" y="400" width="100" height="91" as="geometry" />
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-7" value="Node.js&lt;br&gt;" style="sketch=0;outlineConnect=0;gradientColor=none;fontColor=#545B64;strokeColor=none;fillColor=#879196;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.illustration_users;pointerEvents=1" vertex="1" parent="1">
+          <mxGeometry x="110" y="391" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-12" value="Computador 2" style="fillColor=none;strokeColor=#5A6C86;dashed=1;verticalAlign=top;fontStyle=0;fontColor=#5A6C86;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="654" y="210" width="290" height="379" as="geometry" />
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-11" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#C925D1;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.database;" vertex="1" parent="1">
+          <mxGeometry x="760" y="406.5" width="78" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-16" value="PostgreSQL" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="769" y="484.5" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-17" value="Máquina Virtual (Virtual Box)" style="fillColor=none;strokeColor=#5A6C86;dashed=1;verticalAlign=top;fontStyle=0;fontColor=#5A6C86;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="422.5" y="353" width="175" height="185" as="geometry" />
+        </mxCell>
+        <mxCell id="5X0nf8TGMfctK7YNUYTA-18" value="Container Docker&lt;br&gt;" style="fillColor=none;strokeColor=#5A6C86;dashed=1;verticalAlign=top;fontStyle=0;fontColor=#5A6C86;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="711.5" y="353" width="175" height="185" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

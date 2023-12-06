@@ -1,5 +1,7 @@
 version: '3'
+
 services:
+
   postgres:
     image: postgres:latest
     container_name: postgres
@@ -9,5 +11,12 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-    # volumes:
-    #   - ./data:/var/lib/postgresql/data
+
+  virtual-threads-app:
+    container_name: virtual-threads
+    depends_on:
+      - postgres
+    build:
+      context: ../api.distritos.virtual.threads
+    ports:
+      - 8080:8080
