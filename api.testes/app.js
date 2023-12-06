@@ -15,7 +15,14 @@ let ids = []
 
 // Função para criar a pasta "analises" se não existir
 function createAnalisesFolder(folderName) {
-  const folderPath = path.join(__dirname, folderName);
+  const benchmarkFolderPath = path.join(__dirname, 'benchmark');
+  console.log("criando a pasta: " + benchmarkFolderPath)
+  const folderPath = path.join(benchmarkFolderPath, folderName);
+
+  if (!fs.existsSync(benchmarkFolderPath)) {
+    fs.mkdirSync(benchmarkFolderPath);
+  }
+
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(folderPath);
   }
@@ -107,7 +114,7 @@ function calculateMax(times) {
 
 // Função para salvar os tempos e os parâmetros em um arquivo .txt
 function saveDataToFile(data, filename) {
-  const directoryPath = path.join(__dirname, 'analises_java_' + javaVersion);
+  const directoryPath = path.join(__dirname, 'benchmark/analises_java_' + javaVersion);
   const filePath = path.join(directoryPath, filename);
 
   // Verifica se o diretório já existe, se não existir, cria-o.
@@ -141,6 +148,7 @@ async function calculateAverageResponseTime(x, endpoint, getParameters) {
   const maxTime = calculateMax(responseTimes);
 
   console.log(`Versão do java: ${javaVersion}`)
+  console.log(`Endpoint: /${endpoint}`)
   console.log(`Número de requisições ${x}`)
   console.log(`Tempo médio de resposta para ${x} chamadas: ${averageResponseTime}ms`);
   console.log(`Mediana: ${median}ms`);
@@ -179,7 +187,7 @@ app.get('/test', async (req, res) => {
 
   for (const { name: endpoint, timeout, getParameters } of endpoints) {
     for (const numberOfCalls of numberOfCallsList) {
-      let failedRequests = 0;
+      failedRequests = 0;
       console.log("===========================================================");
       const startTime = new Date().getTime();
       await calculateAverageResponseTime(numberOfCalls, endpoint, getParameters);

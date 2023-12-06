@@ -21,6 +21,9 @@ services:
       SERVER_URL: http://virtual-threads-app:8080
     ports:
       - "3000:3000"
+    volumes:
+      - ./volumes/benchmarks:/app/benchmark
+
 
   virtual-threads-app:
     container_name: virtual-threads

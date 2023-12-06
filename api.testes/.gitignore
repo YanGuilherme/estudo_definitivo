@@ -1,2 +1,4 @@
 node_modules/
 package-lock.json
+benchmark/
+resultados_oficiais/
