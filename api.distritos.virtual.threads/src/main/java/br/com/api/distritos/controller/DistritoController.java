@@ -53,6 +53,12 @@ public class DistritoController {
 
     private final Logger log = LoggerFactory.getLogger(DistritoController.class);
 
+    @GetMapping("/getSetup")
+    public ResponseEntity<String> getStatus(){
+        boolean isVirtual = Thread.currentThread().isVirtual();
+        return ResponseEntity.status(200).body("Servidor usando: " + ( isVirtual ? "Virtual Threads" : "Normal Threads"));
+    }
+
     @GetMapping("/processamento")
     public ResponseEntity<String> processamento1Segundo() throws InterruptedException {
         log.info(Thread.currentThread().toString());
